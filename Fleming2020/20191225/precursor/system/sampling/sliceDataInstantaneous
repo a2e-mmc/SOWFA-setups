@@ -1,0 +1,41 @@
+      sliceDataInstantaneous
+      {
+          type                 surfaces;
+          functionObjectLibs   ("libsampling.so");
+          interpolationScheme  cellPoint;
+          writeControl         adjustableRunTime;
+          writeInterval        60;
+          surfaceFormat        vtk;
+          fields
+          (
+              U
+              T
+          );
+          surfaces
+          (
+              slice_horizontal
+              {
+                  type          cuttingPlane;
+                  planeType     pointAndNormal;
+                  pointAndNormalDict
+                  {
+                      point     ( -133.802 101.012 80.01 );
+                      normal    (0 0 1);
+                  }
+                  interpolate   true;
+              }
+              slice_streamwise
+              {
+                  type          cuttingPlane;
+                  planeType     pointAndNormal;
+                  pointAndNormalDict
+                  {
+                      point     ( -133.802 101.012 80.01 );
+                      //normal    (1 0 0);
+                      // wind from approximately 335deg during period of interest
+                      normal    (0.9063077870366499 0.42261826174069944 0);
+                  }
+                  interpolate   true;
+              }
+          );
+      }

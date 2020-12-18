@@ -1,0 +1,73 @@
+#!/bin/bash
+#SBATCH --nodes=14
+#SBATCH --ntasks=504
+#SBATCH --time=47:59:00
+#SBATCH --job-name=Peetz_prec_run1
+#SBATCH --account=mmc
+#SBATCH --mail-user=eliot.quon@nrel.gov
+#SBATCH --mail-type=ALL
+
+source $HOME/.bash_profile
+
+cores=504
+
+initializer=setFieldsABL
+solver=superDeliciousVanilla
+runNumber=1
+startTime=0
+newSetup=''
+newLowerBC='SpecifiedHeatFlux'
+
+
+OpenFOAM-6-intel-openfast-sp
+
+echo "Starting OpenFOAM job at: " $(date)
+echo "using " $cores " cores"
+echo "with modules:"
+module list
+
+
+
+
+cp system/controlDict.$runNumber system/controlDict
+
+# Update setUp if necessary
+if [ -n "$newSetup" ]; then
+    cp setUp setUp.last
+    cp -v setUp.$newSetup setUp
+fi
+
+# Update surface forcing if necessary
+if [ -n "$newLowerBC" ]; then
+    srun -n $cores --cpu_bind=cores changeDictionary \
+        -dict system/changeDictionaryDict.updateBCs.lower${newLowerBC} \
+        -subDict dictionaryReplacement \
+        -enableFunctionEntries \
+        -parallel > log.$runNumber.changeDictionary.updateBCs.lower${newLowerBC} 2>&1
+fi
+
+# Run the flow field initializer (parallel)
+if [ $runNumber -eq 1 ]; then
+    srun -n $cores --cpu_bind=cores $initializer -parallel > log.$runNumber.$initializer 2>&1
+fi
+
+# Run the solver (parallel)
+while [ -f "system/controlDict.$runNumber" ]; do
+    echo "- $solver run $runNumber"
+    cp system/controlDict.$runNumber system/controlDict
+    cp constant/ABLProperties.$runNumber constant/ABLProperties
+    srun -n $cores --cpu_bind=cores $solver -parallel > log.$runNumber.$solver 2>&1
+    finalStr=`tail -n 1 log.$runNumber.$solver`
+    if [ "$finalStr" == 'Finalising parallel run' ]; then
+        echo "  success"
+    else
+        echo "  simulation crashed?"
+        break
+    fi
+    runNumber=$((runNumber+1))
+done
+
+
+
+
+echo "Ending OpenFOAM job at: " $(date)

@@ -1,0 +1,39 @@
+
+      temporalAveraging
+      {
+          #include            "../../setUp"
+          type                 temporalAveraging;
+          functionObjectLibs   ("libSOWFAfieldFunctionObjects.so");
+          enabled              true;
+//          writeControl         timeStep;
+//          writeInterval        $statisticsFrequency;
+          // output written for full field in processor*
+          writeControl         adjustableRunTime;
+          writeInterval        600;
+
+          restartOnRestart     false;
+          restartOnOutput      false;
+          periodicRestart      false;
+          restartPeriod        0.0;
+
+          fields
+          (
+              U
+              {
+                  mean              on;
+                  prime2Mean        on;
+                  primeUPrimeMean   on;
+                  base              time;
+                  window            600.0;
+              }
+
+              T
+              {
+                  mean              on;
+                  prime2Mean        on;
+                  primeUPrimeMean   on;
+                  base              time;
+                  window            600.0;
+              }
+          );
+      }
