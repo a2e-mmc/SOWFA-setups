@@ -1,0 +1,84 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           dictionary;
+    object          ABLProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "../setUp"
+
+
+// Properties of the background forcing source term
+momentumSource
+{
+    type        "computed";
+    inputType   "component";
+    #include "drivingData/fieldTable"
+
+    //Relaxation factor (only used when type is "computed")
+    gain                0.2;
+    setVerticalCompZero true;
+    regSmoothing        false;
+//  regOrder            3;
+//  alpha               1.0;
+//  timeWindow          1800.0;
+//  writeError          false;
+//  weightsTable
+//  (
+//      (0.0    1.0)
+//      (1000.0 1.0)
+//      (4000.0 1.0)
+//  );
+
+    // partial direct assimilation
+    blendToConst        true;
+    assimMaxHeight      180.0;
+    blendThickness      100.0;
+}
+
+temperatureSource
+{
+    type        "computed";
+
+    //Relaxation factor (only used when type is "computed")
+    gain        0.2;
+
+    sourceHeightsTemperature
+    (
+        59.0 //$windControlHeight
+    );
+    
+    sourceTableTemperature
+    (
+        #include "drivingData/givenSourceT"
+    );
+}
+
+// Properties of the Coriolis force
+planetaryRotationPeriod   $EarthPeriod;
+latitude                  $latitude;
+
+// Statistics gathering input
+// - to write out postProcessing/sourceHistory
+statisticsOn            true;
+statisticsFrequency     $statisticsFrequency;
+
+
+// ************************************************************************* //

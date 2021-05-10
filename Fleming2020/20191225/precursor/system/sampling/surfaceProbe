@@ -1,0 +1,19 @@
+    surfaceProbe
+    {
+          type                probes;
+          functionObjectLibs ("libsampling.so");
+          name                probe1;
+          writeControl        timeStep;
+          writeInterval       1;
+          fields
+          (
+              T
+              qwall
+              Rwall
+          );
+          
+          probeLocations
+          (
+                   (-133.802 101.012 0.0)
+          );
+    }

@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  application       superDeliciousVanilla;
+
+  libs              ("libSOWFAboundaryConditions.so" "libSOWFAincompressibleTurbulenceModels.so");
+
+  startFrom         startTime;
+
+  startTime         0.0; // 2019-12-25 12:00 UTC
+
+  stopAt            endTime;
+
+  endTime           32400.0; // 2019-12-25 21:00 UTC
+
+  deltaT            0.5;
+
+  writeControl      adjustableRunTime;
+
+  writeInterval     600.0; 
+
+  purgeWrite        0;
+
+  writeFormat       binary;
+
+  writePrecision    12;
+
+  writeCompression  uncompressed;
+
+  timeFormat        general;
+
+  timePrecision     12;
+
+  runTimeModifiable yes;
+
+  adjustTimeStep    no;
+
+  maxCo             0.75;
+
+  maxDeltaT         25.0;
+
+  functions
+  {
+    #include "sampling/planarAveraging"
+//    #include "sampling/temporalAveraging"
+    #include "sampling/sliceDataInstantaneous"
+    #include "sampling/virtualMetMast_PL"
+    #include "sampling/surfaceProbe"
+  }
+
+// ************************************************************************* //
+
