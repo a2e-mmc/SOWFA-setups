@@ -1,0 +1,22 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+slicesFINO1
+{
+    type            surfaces;
+    functionObjectLibs ( "libsampling.so" );
+    writeControl    adjustableRunTime;
+    writeInterval   1;
+    fields          ( U T UPrime2Mean TPrimeUPrimeMean );
+    enabled         true;
+    interpolationScheme cell;
+    surfaceFormat   vtk;
+    surfaces        ( zNormal.40 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 40 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } zNormal.80 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 80 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } zNormal.100 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 100 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } zNormal.120 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 120 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } zNormal.160 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 160 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } zNormal.200 { type cuttingPlane ; planeType pointAndNormal ; pointAndNormalDict { basePoint ( 0 0 200 ) ; normalVector ( 0 0 1 ) ; } interpolate true ; } );
+}
+
+
+// ************************************************************************* //

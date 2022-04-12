@@ -1,0 +1,107 @@
+vmasts_small3x3Grid
+{
+    functionObjectLibs ( "libsampling.so" );
+
+    type            sets;
+
+    // Name of the directory for probe data
+    name            pointcloud;
+
+    interpolationScheme cellPoint;  //Linear weighted interpolation using cell values
+
+    // Write at same frequency as fields
+    writeControl   timeStep;  // adjustableTime, timeStep, outputTime
+    writeInterval  1;
+
+    enabled     false;
+
+    setFormat   raw;
+
+    fields
+        (
+         U
+         T
+         p_rgh
+        );
+
+    sets
+        (
+         mast_m100_m100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_m100_m100Pert.txt"
+                     );
+         }
+         mast_m100_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_m100_0Pert.txt"
+                     );
+         }
+         mast_m100_100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_m100_100Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_0_m100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_0_m100Pert.txt"
+                     );
+         }
+         mast_0_100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_0_100Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_100_m100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_100_m100Pert.txt"
+                     );
+         }
+         mast_100_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_100_0Pert.txt"
+                     );
+         }
+         mast_100_100
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_small3x3Grid_mast_100_100Pert.txt"
+                     );
+         }
+
+        );
+}
+
+

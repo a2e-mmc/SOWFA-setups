@@ -1,0 +1,36 @@
+#!/bin/bash
+source $HOME/.bash_profile
+
+# ******************************************** USER INPUT ******************************************** #
+module load paraview/5.6.0
+vars=(U)
+terrain=()
+znormal=(80 200)
+xnormal=()
+ynormal=(2000)
+# **************************************************************************************************** #
+
+for v in ${vars[@]}; do
+    # save terrain slices
+    for t in ${terrain[@]}; do
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice terrain -normal $t -comp Z -lb -2 -ub 2
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice terrain -normal $t -comp Mag -lb 0 -ub 10
+    done
+    # save zNormal slices
+    for z in ${znormal[@]}; do
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice zNormal -normal $z -comp Z -lb -2 -ub 2 -ff 200
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice zNormal -normal $z -comp Mag -lb 12 -ub 16 -ff 200
+    done
+    # save xNormal slices
+    for x in ${xnormal[@]}; do
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice xNormal -normal $x -comp Z -lb -2 -ub 2 -ff 200
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice xNormal -normal $x -comp Mag -lb 12 -ub 20 -ff 200
+    done
+    # save yNormal slices
+    for y in ${ynormal[@]}; do
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice yNormal -normal $y -comp Z -lb -2 -ub 2 -ff 200
+        pvbatch --mesa ~/utilities/saveNormalSlice.py -var $v -slice yNormal -normal $y -comp Mag -lb 12 -ub 20 -ff 200
+    done
+done
+
+# **************************************************************************************************** #
