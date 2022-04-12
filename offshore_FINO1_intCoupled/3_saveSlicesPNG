@@ -10,6 +10,8 @@ xnormal=()
 ynormal=(2000)
 # **************************************************************************************************** #
 
+# `saveNormalSlice.py` script available at https://github.com/rthedin/utilities/blob/master/saveNormalSlice.py
+
 for v in ${vars[@]}; do
     # save terrain slices
     for t in ${terrain[@]}; do

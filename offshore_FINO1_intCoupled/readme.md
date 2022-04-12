@@ -1,6 +1,8 @@
+# FINO1 SOWFA Internal Coupled
+
 This case is the offshore FINO1 boundary coupled to be performed with SOWFA.
 
-Pre-requisits:
+Pre-requisites:
     1. A mesoscale output file should exist. Make sure to give its path in the notebook.
 
 Instructions:
