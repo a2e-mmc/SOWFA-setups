@@ -1,0 +1,37 @@
+slicesTerrainTimeSeries
+{
+    type surfaces;
+    functionObjectLibs ( "libsampling.so" );
+    writeControl        adjustableRunTime;
+    writeInterval       1;
+    fields
+    (
+      U
+    );
+    interpolationScheme cell;      // cell, cellPoint, cellPointCell
+    surfaceFormat           vtk;
+    enabled                 false;
+
+
+     surfaces
+     (
+        terrain.30
+        {
+            type            patchInternalField;
+            patches         ( lower );
+            interpolate     true;
+            offsetMode      uniform;
+            offset          (0 0 30.01);
+            // triangulate     false;
+        }
+        terrain.80
+        {
+            type            patchInternalField;
+            patches         ( lower );
+            interpolate     true;
+            offsetMode      uniform;
+            offset          (0 0 80.01);
+            // triangulate     false;
+        }
+      );
+}

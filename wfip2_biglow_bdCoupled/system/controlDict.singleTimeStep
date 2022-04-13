@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  6
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  application       moveDynamicMesh;
+
+  libs             ( "libSOWFAboundaryConditions.so" "libSOWFAincompressibleTurbulenceModels.so" );
+
+  startFrom         latestTime;
+
+  startTime         0.0;
+
+  stopAt            noWriteNow;
+
+  endTime           150.0;
+
+  deltaT            0.1;
+
+  writeControl      adjustableRunTime;
+
+  writeInterval     10; 
+
+  purgeWrite        0;
+
+  writeFormat       ascii;
+
+  writePrecision    12;
+
+  writeCompression  uncompressed;
+
+  timeFormat        general;
+
+  timePrecision     12;
+
+  runTimeModifiable yes;
+
+  adjustTimeStep    yes;
+
+  maxCo             0.75;
+
+  maxDeltaT         25.0;
+
+  functions
+  {
+    #include "sampling/boundaryDataTest"
+
+      boundaryData
+      {
+          type                 surfaces;
+          functionObjectLibs   ("libsampling.so" "libSOWFAfileFormats.so");
+          enabled              true;
+          interpolationScheme  isThisNeeded;
+          //writeControl         onEnd;
+          writeControl         adjustableRunTime;
+          writeInterval        10;
+          surfaceFormat        boundaryData;
+          fields ( U k );
+          surfaces
+              (
+               south
+               {
+                   type         patch;
+                   patches      (south);
+                   triangulate  false;
+               }
+               north
+               {
+                   type         patch;
+                   patches      (north);
+                   triangulate  false;
+               }
+               west
+               {
+                   type         patch;
+                   patches      (west);
+                   triangulate  false;
+               }
+               east
+               {
+                   type         patch;
+                   patches      (east);
+                   triangulate  false;
+               }
+              );
+      }
+  }
+
+// ************************************************************************* //
+
