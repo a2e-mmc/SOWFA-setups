@@ -24,6 +24,8 @@ cp constant/ABLProperties.upperdamping.lessRAM          constant/ABLProperties
 cp system/sampling/vmasts_1kmGrid.bak                   system/sampling/vmasts_1kmGrid
 cp system/sampling/vmasts_small3x3Grid.bak              system/sampling/vmasts_small3x3Grid
 cp system/sampling/slicesFINO1_correlation.bak          system/sampling/slicesFINO1_correlation
+
+# Check if the damping layers are appropriate
 # **************************************************************************************************** #
 
 # **************************************** PERFORM SOME CHECKS *************************************** #

@@ -84,7 +84,7 @@ Pr                   0.7;                         // Molecular Prandtl number.
 Prt                  0.33333333;                  // Turbulent Prandtl number.
 nu                   1.0E-5;                      // Molecular viscosity (m^2/s).
 TRef                 300.0;                       // Reference potential temperature (K).
-latitude             33.610524;                   // Latitude on the Earth of the site (deg).
+latitude             54.00;                       // Latitude on the Earth of the site (deg).
 EarthPeriod          24.0;                        // Earth's rotation period (hr).
 
 

@@ -24,6 +24,7 @@ dateref='2016-11-21_07_00_00'
 timeref=0
 startTime=0
 nCores1stPart=16
+# Check the lat/lon below for the site of interest
 # **************************************************************************************************** #
 
 # **************************************** PERFORM SOME CHECKS *************************************** #
@@ -142,7 +143,7 @@ cd postProcessing/boundaryDataTOOF
 
 
 # Execute wrftoof
-for currfile in $wrfoutpath/$prefix*21_*; do
+for currfile in $wrfoutpath/$prefix*; do
     echo "Processing $currfile"
     wrftoof $currfile -startdate $dateref -offset 0 -qwall -ic
 done

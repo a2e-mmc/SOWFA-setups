@@ -9,3 +9,4 @@ Pre-requisites:
 Instructions:
 
     1. Set the parameters at the top of each script and submit them in order
+    2. Adjust your conda environment in `2_wrfPreprocess`
