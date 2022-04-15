@@ -1,0 +1,122 @@
+slicesFINO1_correlation
+{
+    type surfaces;
+    functionObjectLibs ( "libsampling.so" );
+    writeControl        adjustableRunTime;
+    writeInterval       1;
+    fields
+    (
+      U
+      T
+//      UPrime2Mean
+    );
+    enabled             false;
+    interpolationScheme cell;      // cell, cellPoint, cellPointCell
+    surfaceFormat           vtk;
+
+
+     surfaces
+     (
+        //zNormal.40
+        //{
+        //    type cuttingPlane;
+        //    planeType pointAndNormal;
+        //    pointAndNormalDict
+        //    {
+        //        basePoint (0 0 40);
+        //        normalVector (0 0 1);
+        //    }
+        //    interpolate true;
+        //}
+        zNormal.80
+        {
+            type cuttingPlane;
+            planeType pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint (0 0 80);
+                normalVector (0 0 1);
+            }
+            interpolate true;
+        }
+        //zNormal.100
+        //{
+        //    type cuttingPlane;
+        //    planeType pointAndNormal;
+        //    pointAndNormalDict
+        //    {
+        //        basePoint (0 0 100);
+        //        normalVector (0 0 1);
+        //    }
+        //    interpolate true;
+        //}
+        //zNormal.120
+        //{
+        //    type cuttingPlane;
+        //    planeType pointAndNormal;
+        //    pointAndNormalDict
+        //    {
+        //        basePoint (0 0 120);
+        //        normalVector (0 0 1);
+        //    }
+        //    interpolate true;
+        //}
+        //zNormal.160
+        //{
+        //    type cuttingPlane;
+        //    planeType pointAndNormal;
+        //    pointAndNormalDict
+        //    {
+        //        basePoint (0 0 160);
+        //        normalVector (0 0 1);
+        //    }
+        //    interpolate true;
+        //}
+        //zNormal.200
+        //{
+        //    type cuttingPlane;
+        //    planeType pointAndNormal;
+        //    pointAndNormalDict
+        //    {
+        //        basePoint (0 0 200);
+        //        normalVector (0 0 1);
+        //    }
+        //    interpolate true;
+        //}
+        xNormal.m1200
+        {
+            type cuttingPlane;
+            planeType pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint (-1200 0 0);
+                normalVector (1 0 0);
+            }
+            interpolate true;
+        }
+        yNormal.8000
+        {
+            type cuttingPlane;
+            planeType pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint (0 800 0);
+                normalVector (0 1 0);
+            }
+            interpolate true;
+        }
+        wdirNormal
+        {
+            // considering wdir=225 constant. Which is not. It varies from about 300 in the beginning
+            // of the window of interest to about 290 towards the end.
+            type cuttingPlane;
+            planeType pointAndNormal;
+            pointAndNormalDict
+            {
+                basePoint (-1200 800 0);
+                normalVector (0.42261826174 0.90630778 0);
+            }
+            interpolate true;
+        }
+      );
+}

@@ -1,0 +1,20 @@
+    probeSurface
+    {
+          type                probes;
+          functionObjectLibs ("libsampling.so");
+          name                probeSurface;
+          interpolationScheme cellPointFace; 
+          outputControl       timeStep;
+          outputInterval      1;
+          enabled             false;
+          fields
+          (
+              Rwall
+              qwall
+          );
+          
+          probeLocations
+          (
+                   #include "coordinateFiles/fino_coordinates_surfaceInfo_Pert.txt"
+          );
+    }
