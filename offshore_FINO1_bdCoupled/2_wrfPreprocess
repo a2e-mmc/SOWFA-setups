@@ -1,0 +1,160 @@
+#!/bin/bash
+#SBATCH --job-name=wrfPreProcBdCoup_fino
+#SBATCH --output foam2wrfpreprocess.log
+#SBATCH --ntasks=144
+#SBATCH --time=4:00:00
+#SBATCH --account=osw
+
+source $HOME/.bash_profile
+cores=$SLURM_NTASKS
+
+echo "Working directory is" $SLURM_SUBMIT_DIR
+echo "Job name is" $SLURM_JOB_NAME
+echo "Submit time is" $(squeue -u $USER -o '%30j %20V' | grep -e $SLURM_JOB_NAME | awk '{print $2}')
+echo "Starting OpenFOAM job at: " $(date)
+echo "using" $cores "core(s)"
+
+# ******************************************** USER INPUT ******************************************** #
+OpenFOAM-6-gcc-dev        # OpenFOAM/SOWFA version. OpenFOAM-6-{gcc,intel}-{central,dev}
+wrfoutpath=/projects/mmc/rthedin/OpenFOAM/rthedin-6/run/offshoreCases/mesoscaleBdDataFromWill
+prefix=wrfout_d03_
+suffix=''  # '.nc'
+
+dateref='2010-05-15_22:00:00'
+timeref=0
+startTime=0
+nGlobalRefs=2
+# **************************************************************************************************** #
+
+# ***************************** COPY APPROPRIATE FILES AND SET VARIABLES ***************************** #
+cp system/controlDict.singleTimeStep                 system/controlDict
+# **************************************************************************************************** #
+
+refineMeshGlobal()
+{
+    for  (( i=0; i<$1; i++ )); do
+        srun -n $cores topoSet -dict system/topoSetDict.entireDom -parallel > log.2.topoSet.entireDom.$i 2>&1
+        srun -n $cores refineHexMesh -overwrite -parallel -noFunctionObjects entireDom > log.2.refineHexMesh.entireDom.$i 2>&1
+        srun -n $cores checkMesh  -parallel -noFunctionObjects > log.2.checkMesh.global.$i 2>&1
+    done
+}
+
+# Get `points` file by running single time step solver
+superDeliciousVanilla > log.2.superDeliciousVanilla.generatePoints 2>&1
+
+if [ ! -d postProcessing/boundaryData ]; then
+    echo "Job killed (1)"; scancel $SLURM_JOBID
+fi 
+
+# Get points in the interior of the domain
+writeCellCenters -time $startTime > log.2.writeCellCenters.$startTime 2>&1
+
+
+# Convert OpenFOAM's x/y/z to lat/long and create the *_bd.dat files
+module load conda
+conda activate mynewenv 
+python << END
+
+import numpy as np
+import os, sys
+sys.path.append('/home/rthedin/ABLTools/python')
+from inflowPrepMMC import inflowPrepMMC
+
+# Latitude and longitude of physics site.
+latPhysicsSite = 54.01514
+lonPhysicsSite = 6.587639
+rotation = 0.0
+caseDir = os.getcwd()
+cellcenterDir = os.path.join(caseDir, 'constant/')
+
+
+boundaries = ['north','south','east','west','lower','upper']
+
+# Declare instance of class for inflow boundaries.
+physicsSite = inflowPrepMMC();
+westBoundary = inflowPrepMMC();
+[xPhysicsSite,yPhysicsSite,UTMzonePhysicsSite] = physicsSite.LatLonToUTM_elem(latPhysicsSite,lonPhysicsSite)
+[lat,lon] = physicsSite.UTMtoLatLon(xPhysicsSite,yPhysicsSite,UTMzonePhysicsSite)
+
+# Create a rotation matrix about z.
+theta = rotation * np.pi / 180.0
+R = np.zeros((3,3))
+R[2,2] = 1.0
+R[0,0] = np.cos(theta)
+R[0,1] = -np.sin(theta)
+R[1,0] = np.sin(theta)
+R[1,1] = np.cos(theta)
+
+for i in range(len(boundaries)):
+    boundaryDir = os.path.join(caseDir, 'postProcessing/boundaryData', boundaries[i])
+    boundary = inflowPrepMMC()
+    boundary.readBoundaryDataPoints( os.path.join(boundaryDir, 'points') )
+    boundary.rotateXYZ(R)
+    boundary.writeBoundaryDataPoints(os.path.join(boundaryDir, 'points.rotated'))
+    boundary.writeDataWRFtoFOAM( os.path.join(boundaryDir, boundaries[i] +'_bc.dat') ,xPhysicsSite,yPhysicsSite,UTMzonePhysicsSite)
+
+
+# interior of the domain
+internalDom = inflowPrepMMC()
+internalDom.readBoundaryDataPoints( os.path.join(cellcenterDir, 'cellCenters') )
+
+internalDom.rotateXYZ(R)
+
+internalDom.writeBoundaryDataPoints( os.path.join(cellcenterDir + 'cellCenterspoints.rotated') )
+internalDom.writeDataWRFtoFOAM( os.path.join(cellcenterDir, 'cellCenters.dat') ,xPhysicsSite,yPhysicsSite,UTMzonePhysicsSite)
+
+END
+
+
+# Prepare the lat/lon files into a new directory
+mkdir postProcessing/boundaryDataTOOF
+for bddir in postProcessing/boundaryData/*; do
+    # get the boundary patch name from full path
+    bd=${bddir##*/};
+    cp postProcessing/boundaryData/$bd/${bd}_bc.dat postProcessing/boundaryDataTOOF/
+done
+cp constant/cellCenters.dat  postProcessing/boundaryDataTOOF/interior.dat
+cd postProcessing/boundaryDataTOOF
+
+
+# Execute wrftoof
+for currfile in $wrfoutpath/$prefix*{15_2[23],16_}*; do
+    echo "Processing $currfile"
+    wrftoof $currfile -startdate $dateref -offset $timeref -qwall -ic
+done
+cd ../..
+
+
+# Prepare case to be executed using the initial solution and bd data
+
+# Get the initial time from the WRF solution
+cp -r postProcessing/boundaryDataTOOF/$timeref  $startTime.fromWRF
+cp -r $startTime.fromWRF/{U,T,p_rgh} $startTime
+rm -rf $startTime/uniform  # delete uniform/time file
+
+# Prepare constant/boundaryData to be used on an inflow-outflow run
+cp -r  postProcessing/boundaryDataTOOF constant
+for bd in north south east west lower upper; do
+    cp postProcessing/boundaryData/$bd/points constant/boundaryDataTOOF/$bd
+done
+rm -r constant/boundaryDataTOOF/{bdy_cache*,*_bc.dat,interior.dat,[0-9]*}
+cd constant  && ln -sf boundaryDataTOOF boundaryData && cd ..
+
+# Change dictionary to the appropriate BCs
+changeDictionary -dict system/changeDictionaryDict.TVMIO.bdCoupled.Wmostly -time $startTime -subDict dictionaryReplacement > log.2.changeDictionary.TVMIO.bdCoupled.Wmostly 2>&1
+
+# Perform local refinement around turbines here, if needed
+
+# Adjust the number of cores in setUp (used in decomposeParDict) and decompose the mesh
+foamDictionary -entry "nCores" -set $cores setUp
+decomposePar -cellDist -force -time $startTime > log.2.decomposePar 2>&1
+
+# Check the newly decomposed mesh
+srun -n $cores checkMesh -noFunctionObjects -parallel > log.2.checkMesh.decomposed 2>&1
+
+# Refine globally. Keeps the case load balanced
+refineMeshGlobal $nGlobalRefs
+
+echo "Ending OpenFOAM job at: " $(date)
+
+# **************************************************************************************************** #

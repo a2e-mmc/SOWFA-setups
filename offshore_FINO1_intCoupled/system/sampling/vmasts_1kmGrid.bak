@@ -1,0 +1,262 @@
+vmasts_1kmGrid
+{
+    functionObjectLibs ( "libsampling.so" );
+
+    type            sets;
+
+    // Name of the directory for probe data
+    name            pointcloud;
+
+    interpolationScheme cellPoint;  //Linear weighted interpolation using cell values
+
+    // Write at same frequency as fields
+    writeControl   timeStep;  // adjustableTime, timeStep, outputTime
+    writeInterval  1;
+
+    enabled     false;
+
+    setFormat   raw;
+
+    fields
+        (
+         U
+         T
+         p_rgh
+        );
+
+    sets
+        (
+         mast_m3_m1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m3_m1Pert.txt"
+                     );
+         }
+         mast_m3_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m3_0Pert.txt"
+                     );
+         }
+         mast_m3_1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m3_1Pert.txt"
+                     );
+         }
+         mast_m3_2
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m3_2Pert.txt"
+                     );
+         }
+         mast_m3_3
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m3_3Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_m2_m1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m2_m1Pert.txt"
+                     );
+         }
+         mast_m2_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m2_0Pert.txt"
+                     );
+         }
+         mast_m2_1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m2_1Pert.txt"
+                     );
+         }
+         mast_m2_2
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m2_2Pert.txt"
+                     );
+         }
+         mast_m2_3
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m2_3Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_m1_m1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m1_m1Pert.txt"
+                     );
+         }
+         mast_m1_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m1_0Pert.txt"
+                     );
+         }
+         mast_m1_1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m1_1Pert.txt"
+                     );
+         }
+         mast_m1_2
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m1_2Pert.txt"
+                     );
+         }
+         mast_m1_3
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_m1_3Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_0_m1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_0_m1Pert.txt"
+                     );
+         }
+         mast_0_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_0_0Pert.txt"
+                     );
+         }
+         mast_0_1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_0_1Pert.txt"
+                     );
+         }
+         mast_0_2
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_0_2Pert.txt"
+                     );
+         }
+         mast_0_3
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_0_3Pert.txt"
+                     );
+         }
+         // --------------------------------------------------------------------------------------
+         mast_1_m1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_1_m1Pert.txt"
+                     );
+         }
+         mast_1_0
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_1_0Pert.txt"
+                     );
+         }
+         mast_1_1
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_1_1Pert.txt"
+                     );
+         }
+         mast_1_2
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_1_2Pert.txt"
+                     );
+         }
+         mast_1_3
+         {
+             type    points;
+             ordered no;
+             axis    xyz;
+             points  (
+                     #include "coordinateFiles/fino_coordinates_1kmGrid_mast_1_3Pert.txt"
+                     );
+         }
+
+        );
+}
+
+
