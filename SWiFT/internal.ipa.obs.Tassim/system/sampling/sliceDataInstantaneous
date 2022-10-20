@@ -1,0 +1,73 @@
+        sliceDataInstantaneous
+        {
+            type                 surfaces;
+            functionObjectLibs   ("libsampling.so");
+            enabled              true;
+            interpolationScheme  cell;
+            writeControl        adjustableRunTime;
+            writeInterval        60;
+            surfaceFormat        vtk;
+            fields
+            (
+                U
+                T
+            );
+            surfaces
+            (
+                slice_horizontal_10m
+                {
+                    type         plane;
+                    planeType    pointAndNormal;
+                    pointAndNormalDict
+                    {
+                        point   (2500.01 2500.01 10.01);
+                        normal  (0 0 1);
+                    };
+                    triangulate  false;
+                }
+                slice_horizontal_32m
+                {
+                    type         plane;
+                    planeType    pointAndNormal;
+                    pointAndNormalDict
+                    {
+                        point   (2500.01 2500.01 32.01);
+                        normal  (0 0 1);
+                    };
+                    triangulate  false;
+                }
+                slice_horizontal_120m
+                {
+                    type         plane;
+                    planeType    pointAndNormal;
+                    pointAndNormalDict
+                    {
+                        point   (2500.01 2500.01 120.01);
+                        normal  (0 0 1);
+                    };
+                    triangulate  false;
+                }
+                slice_westEast
+                {
+                    type         plane;
+                    planeType    pointAndNormal;
+                    pointAndNormalDict
+                    {
+                        point   (2500.01 2500.01 120.01);
+                        normal  (0 1 0);
+                    };
+                    triangulate  false;
+                }
+                slice_northSouth
+                {
+                    type         plane;
+                    planeType    pointAndNormal;
+                    pointAndNormalDict
+                    {
+                        point   (2500.01 2500.01 120.01);
+                        normal  (1 0 0);
+                    };
+                    triangulate  false;
+                }
+            );
+        }
