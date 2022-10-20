@@ -91,7 +91,7 @@ kappa                     $kappa;
 // Vertical profile table.
 profileTable
 (
-    #include "../initialValues"
+    #include "../../drivingData/wrf/initialValues"
 );
 
 // Update internal field.

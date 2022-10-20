@@ -31,7 +31,7 @@ momentumSource
 {
     type        "computed";
     inputType   "component";
-    #include "../fieldTable"
+    #include "../../drivingData/obs/fieldTable"
 
     gain        0.2;
     setVerticalCompZero true;
@@ -51,7 +51,7 @@ momentumSource
 temperatureSource
 {
     type        "given";
-    #include "../forcingTable"
+    #include "../../drivingData/wrf/forcingTable"
 
 }
 

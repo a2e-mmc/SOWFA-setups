@@ -29,13 +29,13 @@ FoamFile
 momentumSource
 {
     type        "given";
-    #include "../forcingTable"
+    #include "../../drivingData/wrf/forcingTable"
 }
 
 temperatureSource
 {
     type        "given";
-    #include "../forcingTable"
+    #include "../../drivingData/wrf/forcingTable"
 }
 
 

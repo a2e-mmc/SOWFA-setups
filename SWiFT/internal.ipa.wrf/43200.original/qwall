@@ -28,7 +28,7 @@ boundaryField
         type            specifiedSurfaceTemperature;
         TSurface        table
         (
-            #include "../surfaceSkinPotentialTemperatureTable"
+            #include "../../drivingData/wrf/surfaceSkinPotentialTemperatureTable"
         );
         kappa           $kappa;
         z0              uniform $z0;
