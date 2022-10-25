@@ -1,0 +1,76 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.6                                   |
+|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version         2.0;
+    format          ascii;
+
+    root            "";
+    case            "";
+    instance        "";
+    local           "";
+
+    class           dictionary;
+    object          ABLProperties;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include        "../setUp"
+
+
+
+// Properties of the mesoscale source terms
+momentumSource
+{
+    type        "computed";
+    inputType   "component";
+    #include "../../drivingData/obs/fieldTable"
+
+    gain        0.2;
+    setVerticalCompZero true;
+    regSmoothing        true;
+    regOrder    3;
+    alpha       1.0;
+    timeWindow  1800.0;
+    writeError  false;
+    weightsTable
+    (
+        (0.0    1.0)
+        (1000.0 1.0)
+        (4000.0 1.0)
+    );
+}
+
+temperatureSource
+{
+    type        "given";
+    sourceHeightsTemperature
+    (
+        0.0
+    );
+
+    sourceTableTemperature
+    (
+        (     0.0 0.0)
+        (200000.0 0.0)
+    );
+}
+
+
+// Properties of the Coriolis force
+planetaryRotationPeriod   $EarthPeriod;
+latitude                  $latitude;
+
+
+// Statistics gathering input
+statisticsOn              $statisticsOn;
+statisticsFrequency       $statisticsFrequency;
+
+// ************************************************************************* //
